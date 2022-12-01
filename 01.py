@@ -33,4 +33,7 @@ def parse(lines):
     return elves
 
 elves = parse(lines)
-print(max(elves))
+
+top3 = list(reversed(sorted(elves)))[:3]
+
+print(sum(top3))
