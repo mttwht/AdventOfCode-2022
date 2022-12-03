@@ -19,8 +19,8 @@ def halveLine(line):
     return line[:length], line[length:]
 
 
-def getCommonItem(comp1, comp2):
-    common = set(comp1).intersection(set(comp2))
+def getCommonItem(sack1, sack2, sack3):
+    common = set(sack1).intersection(set(sack2)).intersection(set(sack3))
     return common.pop()
 
 
@@ -30,9 +30,9 @@ def getItemPriority(item):
 
 
 totalPriority = 0
-for line in lines:
-    (begin, end) = halveLine(line)
-    commonItem = getCommonItem(begin, end)
+for line in range(int(len(lines) / 3)):
+    beginLine = line * 3
+    commonItem = getCommonItem(lines[beginLine+0], lines[beginLine+1], lines[beginLine+2])
     priority = getItemPriority(commonItem)
     totalPriority += priority
 
