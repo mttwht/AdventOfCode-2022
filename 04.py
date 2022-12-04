@@ -22,7 +22,7 @@ def parseLine(line):
 
 def fullyContains(a1: list, a2: list):
     overlap = set(a1).intersection(set(a2))
-    if len(overlap) == len(a1) or len(overlap) == len(a2):
+    if len(overlap) > 0:
         return True
     return False
 
