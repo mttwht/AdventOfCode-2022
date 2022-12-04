@@ -27,10 +27,18 @@ def fullyContains(a1: list, a2: list):
     return False
 
 
-fullOverlaps = 0
+def contains(a1, a2):
+    overlap = set(a1).intersection(set(a2))
+    if len(overlap) > 0:
+        return True
+    return False
+
+
+overlaps = 0
 for line in lines:
     (area1, area2) = parseLine(line)
-    if fullyContains(area1, area2):
-        fullOverlaps += 1
+    if contains(area1, area2):
+        overlaps += 1
 
-print(fullOverlaps)
+
+print(overlaps)
