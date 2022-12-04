@@ -20,7 +20,7 @@ def parseLine(line):
     return sections[0], sections[1]
 
 
-def fullyContains(a1: list, a2: list):
+def fullyContains(a1, a2):
     overlap = set(a1).intersection(set(a2))
     if len(overlap) == len(a1) or len(overlap) == len(a2):
         return True
