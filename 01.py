@@ -1,6 +1,7 @@
 with open("input-01.txt", "r") as file:
     lines = [line.strip() for line in file.readlines()]
 
+
 # # Example input:
 # lines = """1000
 # 2000
@@ -19,7 +20,9 @@ with open("input-01.txt", "r") as file:
 # """.splitlines()
 # # Example answer = 24000
 
-def parse(lines):
+### 
+def parse(lines: list[str]) -> list[int]:
+    """Parses lines of input into a list of calorie totals per elf"""
     elves = list()
     elf = 0
     for i in range(len(lines)):
@@ -31,6 +34,7 @@ def parse(lines):
             elf = 0
     elves.append(elf)
     return elves
+
 
 elves = parse(lines)
 

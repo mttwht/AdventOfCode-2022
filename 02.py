@@ -14,8 +14,10 @@ shapeScores = {'A': 1, 'B': 2, 'C': 3,
 outcomeScores = {'X': 0, 'Y': 3, 'Z': 6}
 
 
-def determineShape(line):
-    (u, i) = line.split()
+def determine_shape(line):
+    """Determine the shape the player is to play"""
+
+    (u, i) = line.split() # u & i = You & I
     shape = shapeScores[u]
     if i == 'X':
         shape -= 1
@@ -25,22 +27,28 @@ def determineShape(line):
     return ['Z', 'X', 'Y'][shape]
 
 
-def shapeScore(line):
-    shape = determineShape(line)
+def shape_score(line):
+    """Calculate the players score for the shape played"""
+
+    shape = determine_shape(line)
     return shapeScores[shape]
 
 
-def outcomeScore(line):
-    (u, i) = line.split()
+def outcome_score(line):
+    """Calculate the players score for an outcome"""
+
+    (u, i) = line.split() # u & i = You & I
     return outcomeScores[i]
 
 
-def roundScore(line):
-    return shapeScore(line) + outcomeScore(line)
+def round_score(line):
+    """Calculate the score for a single round"""
+
+    return shape_score(line) + outcome_score(line)
 
 
 totalScore = 0
 for line in lines:
-    totalScore += roundScore(line)
+    totalScore += round_score(line)
 
 print(totalScore)

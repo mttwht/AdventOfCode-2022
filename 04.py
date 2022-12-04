@@ -14,13 +14,17 @@ with open("input-04.txt", "r") as file:
 # Example answer = 2
 
 
-def parseLine(line):
+def parse_line(line):
+    """Convert an input line into a list of values for each area"""
+
     sections = [sections.split("-") for sections in line.split(",")]
     sections = [list(range(int(s[0]), int(s[1])+1)) for s in sections]
     return sections[0], sections[1]
 
 
-def fullyContains(a1, a2):
+def fully_contains(a1, a2):
+    """Determine if a1 fully contains a2 or vice-versa"""
+
     overlap = set(a1).intersection(set(a2))
     if len(overlap) == len(a1) or len(overlap) == len(a2):
         return True
@@ -28,6 +32,8 @@ def fullyContains(a1, a2):
 
 
 def contains(a1, a2):
+    """Determine if any elements of a1 are contained in a2"""
+
     overlap = set(a1).intersection(set(a2))
     if len(overlap) > 0:
         return True
@@ -36,9 +42,8 @@ def contains(a1, a2):
 
 overlaps = 0
 for line in lines:
-    (area1, area2) = parseLine(line)
+    (area1, area2) = parse_line(line)
     if contains(area1, area2):
         overlaps += 1
-
 
 print(overlaps)
