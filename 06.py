@@ -3,19 +3,19 @@ with open("input-06.txt", "r") as file:
 
 
 # Example input:
-# line = "mjqjpqmgbljsphdztnvjfqwrcgsmlb"  # Example answer = 7
-# line = "bvwbjplbgvbhsrlpgdmjqwftvncz"  # Example answer = 5
-# line = "nppdvjthqldpwncqszvftbrmjlhg"  # Example answer = 6
-# line = "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"  # Example answer = 10
-# line = "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"  # Example answer = 11
+# line = "mjqjpqmgbljsphdztnvjfqwrcgsmlb"  # Example answer = 19
+# line = "bvwbjplbgvbhsrlpgdmjqwftvncz"  # Example answer = 23
+# line = "nppdvjthqldpwncqszvftbrmjlhg"  # Example answer = 23
+# line = "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"  # Example answer = 29
+# line = "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw"  # Example answer = 26
 
 
-def index_after_sop_marker(datastream):
-    """Finds the index of the character after the first start-of-packet marker"""
+def index_after_marker(datastream, marker_length):
+    """Finds the index of the character after the first marker"""
 
-    for i in range(len(datastream) - 4):
-        if (len(set(datastream[i:i + 4]))) == 4:
-            return i + 4
+    for i in range(len(datastream) - marker_length):
+        if (len(set(datastream[i:i + marker_length]))) == marker_length:
+            return i + marker_length
 
 
-print(index_after_sop_marker(line))
+print(index_after_marker(line, 14))
