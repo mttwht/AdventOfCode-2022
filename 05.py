@@ -70,8 +70,11 @@ print_stacks(stacks)
 p = re.compile("^move (\d+) from (\d+) to (\d+)")
 for line in lines[sectionLength + 1:]:
     (move_count, move_from, move_to) = p.match(line).groups()
+    (move_from_i, move_to_i) = (int(move_from) - 1, int(move_to) - 1)
+    moving_crates = list()
     for i in range(int(move_count)):
-        stacks[int(move_to) - 1].append(stacks[int(move_from) - 1].pop())
+        moving_crates.append(stacks[move_from_i].pop())
+    stacks[move_to_i] += reversed(moving_crates)
 
 print_stacks(stacks)
 print()
