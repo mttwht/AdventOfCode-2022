@@ -76,8 +76,9 @@ for line in lines:
             size, filename = line.split()
             get_cwd().files[filename] = int(size)
 
-answer = 0
+space_needed = root.size() - (70000000 - 30000000)
+big_enough_dirs = set()
 for dir in all_dirs:
-    if dir.size() <= 100000:
-        answer += dir.size()
-print(answer)
+    if dir.size() >= space_needed:
+        big_enough_dirs.add(dir)
+print(min([dir.size() for dir in big_enough_dirs]))
