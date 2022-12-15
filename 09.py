@@ -11,9 +11,20 @@ with open("input-09.txt", "r") as file:
 # L 5
 # R 2
 # """.splitlines()
+# Example answer = 1
 
 
-# Example answer = 13
+# # Example input 2:
+# lines = """R 5
+# U 8
+# L 8
+# D 3
+# R 17
+# D 10
+# L 25
+# U 20
+# """.splitlines()
+# # Example answer = 36
 
 
 def parse_move(line: str) -> (str, int):
@@ -61,22 +72,24 @@ def move_t(t, h):
     return (x, y), positions
 
 
-def do_move(move, h, t):
+def do_move(move, rope):
     global t_positions
-    h = move_h(h, move)
-    t, positions = move_t(t, h)
-    t_positions = t_positions.union(positions)
-    return h, t
+    for i in range(move[1]):
+        m = (move[0], 1)
+        rope[0] = move_h(rope[0], m)
+        for knot in range(1, len(rope)):
+            rope[knot], positions = move_t(rope[knot], rope[knot - 1])
+        t_positions = t_positions.union(positions)
+    return rope
 
 
-h = (0, 0)
-t = (0, 0)
+rope = [(0, 0)] * 10
 
-t_positions = {t}
+t_positions = {rope[-1]}
 
 for line in lines:
     move = parse_move(line)
-    h, t = do_move(move, h, t)
+    rope = do_move(move, rope)
 
 print(len(t_positions))
-print(sorted(t_positions))
+# print(sorted(t_positions))
