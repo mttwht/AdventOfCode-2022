@@ -172,8 +172,13 @@ for line in lines:
     if c == 2:
         changes.append(x)
 
-signal_strengths = list()
-for i in range(20, cycle, 40):
-    signal_strengths.append(i * sum(changes[:i]))
+for i in range(1, len(changes)):
+    x_pos = i % 40 - 1
+    x_val = sum(changes[:i])
+    if x_pos == 0:
+        print()
 
-print(sum(signal_strengths))
+    if x_val - 1 <= x_pos <= x_val + 1:
+        print("#", end='')
+    else:
+        print(".", end='')
