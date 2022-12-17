@@ -8,21 +8,21 @@ with open("input-11.txt", "r") as file:
 #   Test: divisible by 23
 #     If true: throw to monkey 2
 #     If false: throw to monkey 3
-
+#
 # Monkey 1:
 #   Starting items: 54, 65, 75, 74
 #   Operation: new = old + 6
 #   Test: divisible by 19
 #     If true: throw to monkey 2
 #     If false: throw to monkey 0
-
+#
 # Monkey 2:
 #   Starting items: 79, 60, 97
 #   Operation: new = old * old
 #   Test: divisible by 13
 #     If true: throw to monkey 1
 #     If false: throw to monkey 3
-
+#
 # Monkey 3:
 #   Starting items: 74
 #   Operation: new = old + 3
@@ -34,7 +34,7 @@ with open("input-11.txt", "r") as file:
 
 
 def apply_relief(item: int) -> int:
-    return int(item / 3)
+    return item % worry_limit
 
 
 class Monkey:
@@ -89,6 +89,10 @@ def print_monkeys(monkeys: list[Monkey]) -> None:
         print_monkey(monkeys.index(monkey), monkey)
 
 
+def print_monkey_business_levels(monkeys: list[Monkey]):
+    for m in range(len(monkeys)):
+        print("Monkey", m, "inspected items", monkeys[m].inspections, "times.")
+
 def monkey_business_level(monkeys: list[Monkey]) -> int:
     total_inspections = [m.inspections for m in monkeys]
     cheeky_monkeys = sorted(total_inspections)[-2:]
@@ -97,16 +101,19 @@ def monkey_business_level(monkeys: list[Monkey]) -> int:
 
 monkeys = parse_monkeys(lines)
 
-print(0)
-print_monkeys(monkeys)
+worry_limit = 1
+test_vals = set([m.test_val for m in monkeys])
+for val in test_vals:
+    worry_limit *= val
 
-for i in range(20):
+for i in range(10000):
     for monkey in monkeys:
         while monkey.items:
             item = monkey.inspect_item()
             m2 = monkey.who_to_throw_to(item)
             monkeys[m2].items.append(item)
-    print(i + 1)
-    print_monkeys(monkeys)
+    print("== After round", i+1, "==")
+    print_monkey_business_levels(monkeys)
+    print()
 
 print(monkey_business_level(monkeys))
