@@ -59,7 +59,12 @@ def find_shortest_paths(map: list[list[int]], start: tuple[int, int]) -> list[li
 
 map = parse_input(lines)
 start, end = find_start(lines), find_end(lines)
-distances = find_shortest_paths(map, start)
 
-print(distances)
-print(distances[end[1]][end[0]])
+shortest_distance = 380
+for row in map:
+    for cell in row:
+        if cell == ord("a"):
+            distances = find_shortest_paths(map, (row.index(cell), map.index(row)))
+            shortest_distance = min(distances[end[1]][end[0]], shortest_distance)
+
+print(shortest_distance)
