@@ -30,19 +30,20 @@ with open("input-13.txt", "r") as file:
 # """.splitlines()
 
 
-# Example answer = 13
+# Example answer = 140
 
 
 def parse_line(line: str) -> list:
     return json.loads(line)
 
 
-def parse_input(input: list[str]) -> list[tuple[list, list]]:
-    pairs = list()
-    for i in range(0, len(input), 3):
-        l, r = parse_line(input[i]), parse_line(input[i + 1])
-        pairs.append((l, r))
-    return pairs
+def parse_input(input: list[str]) -> list[list]:
+    return [parse_line(line) for line in input if line]
+    packets = list()
+    for line in input:
+        if line:
+            packets.append(parse_line(line))
+    return packets
 
 
 def is_ordered(left: list, right: list) -> bool|None:
@@ -65,12 +66,17 @@ def is_ordered(left: list, right: list) -> bool|None:
         return True
 
 
-pairs = parse_input(lines)
-ordered_pairs = []
-for i in range(len(pairs)):
-    left, right = pairs[i]
-    if is_ordered(left, right) != False:
-        ordered_pairs.append(i + 1)
+packets = parse_input(lines)
+dividers = [json.loads("[[2]]"), json.loads("[[6]]")]
 
-print(ordered_pairs)
-print(sum(ordered_pairs))
+groups = [[], [], []]
+
+for packet in packets:
+    if is_ordered(packet, dividers[0]):
+        groups[0].append(packet)
+    elif is_ordered(packet, dividers[1]):
+        groups[1].append(packet)
+    else:
+        groups[2].append(packet)
+
+print((len(groups[0]) + 1) * (len(groups[0]) + len(groups[1]) + 2))
