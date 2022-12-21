@@ -9,7 +9,7 @@ SAND = 2
 # lines = """498,4 -> 498,6 -> 496,6
 # 503,4 -> 502,4 -> 502,9 -> 494,9
 # """.splitlines()
-# # Example answer = 24
+# # Example answer = 93
 
 
 def parse_paths(input: list[str]) -> list[tuple[tuple[int, int], tuple[int, int]]]:
@@ -40,6 +40,8 @@ def make_map(paths):
         elif y1 == y2:
             for x in range(min(x1, x2), max(x1, x2) + 1):
                 slice_map[x][y1] = ROCK
+    for x in range(len(slice_map)):
+        slice_map[x] += [EMPTY_SPACE, ROCK]
     return slice_map
 
 
@@ -47,15 +49,19 @@ def drop_sand(slice_map):
     (x, y) = (500, 0)
     falling = True
     while falling:
-        if y+1 >= len(slice_map[x]):
-            # fall off edge of map
-            return None
-        elif slice_map[x][y + 1] == EMPTY_SPACE:
+        if x + 1 >= len(slice_map):
+            new_col = [EMPTY_SPACE for _ in range(len(slice_map[0]))]
+            new_col[-1] = ROCK
+            slice_map.append(new_col)
+
+        if slice_map[x][y + 1] == EMPTY_SPACE:
             (x, y) = (x, y+1)
         elif slice_map[x-1][y+1] == EMPTY_SPACE:
             (x, y) = (x-1, y+1)
         elif slice_map[x+1][y+1] == EMPTY_SPACE:
             (x, y) = (x+1, y+1)
+        elif y == 0 and slice_map[x][y] != EMPTY_SPACE:
+            return None
         else:
             return (x, y)
 
