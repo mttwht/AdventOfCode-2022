@@ -2,7 +2,6 @@ import regex as re
 
 with open("input-15.txt", "r") as file:
     lines = [line.strip() for line in file.readlines()]
-target_row = 2000000
 
 # # Example input:
 # lines = """Sensor at x=2, y=18: closest beacon is at x=-2, y=15
@@ -20,10 +19,9 @@ target_row = 2000000
 # Sensor at x=14, y=3: closest beacon is at x=15, y=3
 # Sensor at x=20, y=1: closest beacon is at x=15, y=3
 # """.splitlines()
-# target_row = 10
 
 
-# Example answer = 26 for row y=10
+# Example answer = 56000011
 
 
 def parse_line(line: str) -> tuple[tuple[int, int], tuple[int, int]]:
@@ -38,21 +36,33 @@ def manhattan_distance(p1: tuple[int, int], p2: tuple[int, int]) -> int:
     return abs(x1 - x2) + abs(y1 - y2)
 
 
-pairs = []
+multiplier = 4000000
+search_space = multiplier
+sensors = []
 
 for line in lines:
-    sensor, beacon = parse_line(line)
-    pairs.append((sensor, beacon))
+    s, beacon = parse_line(line)
+    sensors.append((s, manhattan_distance(s, beacon)))
 
-coverage = set()
-for sensor, beacon in pairs:
-    m_dist = manhattan_distance(sensor, beacon)
-    sx, sy = sensor
-    if sy + m_dist >= target_row >= sy - m_dist:
-        for i in range(m_dist - abs(sy - target_row) + 1):
-            coverage.add(sx + i)
-            coverage.add(sx - i)
+answer = None
 
-coverage = coverage.difference([bx for _, (bx, by) in pairs if by == target_row])
+for x in range(search_space):
+    y = 0
+    while y < search_space:
+        overlap = False
+        for s, m in sensors:
+            m_dist = manhattan_distance(s, (x, y))
+            if m_dist <= m:
+                y += m - m_dist
+                overlap = True
+                break
+        if not overlap:
+            answer = (x, y)
+            break
+        y += 1
+    print(x, "/", search_space)
+    if answer:
+        break
 
-print(len(coverage))
+print(answer)
+print(answer[0] * multiplier + answer[1])
