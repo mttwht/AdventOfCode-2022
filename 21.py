@@ -20,7 +20,7 @@ with open("input-21.txt", "r") as file:
 # drzm: hmdt - zczc
 # hmdt: 32
 # """.splitlines()][1:]
-# # Example answer = 152
+# # Example answer = 301
 
 
 def parse_input(input_lines):
@@ -46,8 +46,35 @@ def get_monkey_value(monkeys: dict[str, str], monkey: str) -> int:
         if op == "*":
             return m1 * m2
         if op == "/":
-            return int(m1 / m2)
+            return m1 / m2
+
+
+def get_human_value(monkeys: dict[str, str], root_monkey: str) -> int:
+    lower, upper = 1, 1
+    m1, _, m2 = monkeys[root_monkey].split()
+    finding_upper = True
+    monkey_diff = None
+    while finding_upper:
+        diff = get_monkey_value(monkeys, m1) - get_monkey_value(monkeys, m2)
+        if not monkey_diff or (diff >= 0) == (monkey_diff >= 0):
+            monkey_diff = diff
+            lower, upper = upper, upper * 2
+            monkeys["humn"] = str(upper)
+            finding_upper = True
+        else:
+            finding_upper = False
+    while lower < upper:
+        mid = int(lower + (upper - lower) / 2)
+        monkeys["humn"] = str(mid)
+        diff = get_monkey_value(monkeys, m1) - get_monkey_value(monkeys, m2)
+        if diff == 0:
+            return mid
+        elif (diff >= 0) == (monkey_diff >= 0):
+            lower = mid
+        else:
+            upper = mid
 
 
 monkeys = parse_input(input_lines)
-print(get_monkey_value(monkeys, "root"))
+humn_val = get_human_value(monkeys, "root")
+print(humn_val)
