@@ -11,7 +11,7 @@ with open("input-23.txt", "r") as file:
 # ##.#.##
 # .#..#..
 # """.splitlines()][1:]
-# # Example answer = 110
+# # Example answer = 20
 
 ELF, EMPTY = "#", "."
 DIRECTION_SEQUENCE = "NSWE"
@@ -124,8 +124,14 @@ def do_turn(grove: list[str]) -> list[str]:
     return grove
 
 
-for turn in range(10):
-    grove = do_turn(grove)
+turn_count = 0
+while True:
+    turn_count += 1
+    old_grove, grove = grove, do_turn(grove)
+
+    if "".join(old_grove) == "".join(grove):
+        break
 
 grove = trim(grove)
 print(sum([row.count(EMPTY) for row in grove]))
+print(turn_count)
